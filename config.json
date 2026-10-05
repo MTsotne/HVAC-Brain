@@ -1,0 +1,4 @@
+{
+  "location": { "name": "Šiauliai", "latitude": 55.93, "longitude": 23.32 },
+  "initialHome": { "temperatureC": 21.5, "humidityPct": 45 }
+}

@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hvac-brain recorder</title>
+<style>
+  :root {
+    --ground: #e7edf1;
+    --surface: #f8fafb;
+    --ink: #1c2a35;
+    --muted: #5b6d7a;
+    --rule: #c8d2da;
+    --heat: #d4572a;
+    --cool: #2b7bc8;
+    --ventilate: #1b9c85;
+    --dehumidify: #7e57c2;
+    --rain: #7fa9cf;
+    --display: Bahnschrift, "DIN Alternate", "Roboto Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
+    --body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #111a21;
+      --surface: #18232c;
+      --ink: #e4ebf0;
+      --muted: #93a4b0;
+      --rule: #2e3c47;
+      --heat: #ee7a4f;
+      --cool: #5aa3e6;
+      --ventilate: #3fc2aa;
+      --dehumidify: #a585e0;
+      --rain: #4d7396;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font: 15px/1.5 var(--body);
+    font-variant-numeric: tabular-nums;
+  }
+  main { max-width: 1280px; margin: 0 auto; padding: 28px 24px 64px; }
+  header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  h1 { font: 600 34px/1.1 var(--display); letter-spacing: 0.01em; margin: 0; }
+  h2 { font: 600 19px/1.2 var(--display); margin: 0 0 10px; }
+  .span { color: var(--muted); margin: 6px 0 0; }
+  .summary { max-width: 70ch; margin: 14px 0 22px; font-size: 16px; }
+  .open {
+    font: inherit; color: var(--ink); background: var(--surface);
+    border: 1px solid var(--rule); border-radius: 4px; padding: 7px 12px; cursor: pointer;
+  }
+  .open:hover { border-color: var(--muted); }
+  :focus-visible { outline: 2px solid var(--cool); outline-offset: 2px; }
+  input[type="file"] { position: absolute; width: 1px; height: 1px; opacity: 0; }
+
+  .recorder { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; }
+  @media (max-width: 960px) { .recorder { grid-template-columns: minmax(0, 1fr); } }
+  .chart, .inspector, .changes { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; }
+  .chart { padding: 14px 14px 8px; }
+  .chart svg { display: block; width: 100%; touch-action: pan-y; cursor: crosshair; }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 14px; height: 3px; background: currentColor; display: inline-block; }
+  .legend i.block { height: 10px; border-radius: 1px; }
+  .hint { color: var(--muted); font-size: 13px; margin: 6px 0 2px; }
+
+  .inspector { padding: 16px 18px 18px; position: sticky; top: 16px; }
+  .inspector .moment { font: 600 24px/1.1 var(--display); margin: 0 0 12px; }
+  .inspector dl { display: grid; grid-template-columns: 76px 1fr; gap: 6px 10px; margin: 0 0 14px; }
+  .inspector dt { color: var(--muted); }
+  .inspector dd { margin: 0; }
+  .command { font-weight: 600; }
+  .proposals { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+  .proposals li { padding: 9px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 34px 1fr; gap: 2px 8px; }
+  .proposals .priority { color: var(--muted); grid-row: span 2; }
+  .proposals .rule { font-weight: 600; }
+  .proposals .lost .rule, .proposals .lost .wants { font-weight: 400; color: var(--muted); text-decoration: line-through; }
+  .proposals .reason { color: var(--muted); font-size: 13px; }
+  .tag { font-size: 12px; font-weight: 400; border: 1px solid var(--rule); border-radius: 3px; padding: 0 5px; margin-left: 6px; white-space: nowrap; }
+  .note { margin: 12px 0 0; padding: 8px 10px; border-left: 3px solid var(--heat); background: var(--ground); font-size: 13px; }
+
+  .changes { margin-top: 20px; padding: 16px 18px 6px; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 620px; }
+  th { text-align: left; font-weight: 400; color: var(--muted); padding: 4px 12px 6px 0; border-bottom: 1px solid var(--rule); }
+  td { padding: 7px 12px 7px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  td button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+  tr.current td { background: var(--ground); }
+  .swatch { display: inline-block; width: 9px; height: 9px; border-radius: 1px; margin-right: 6px; }
+
+  .empty { max-width: 62ch; margin-top: 28px; padding: 28px; background: var(--surface); border: 1px dashed var(--muted); border-radius: 6px; }
+  .empty.over { border-style: solid; border-color: var(--cool); }
+  .empty code { background: var(--ground); padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+  .error { color: var(--heat); margin-top: 12px; }
+
+  svg text { font: 12px var(--body); fill: var(--muted); }
+  svg .lane-title { font: 600 13px var(--display); fill: var(--ink); }
+  svg .grid { stroke: var(--rule); stroke-width: 1; }
+  svg .outside { stroke: var(--muted); stroke-width: 1.5; fill: none; }
+  svg .inside { stroke: var(--ink); stroke-width: 2.25; fill: none; }
+  svg .setpoint { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 4 4; fill: none; opacity: 0.55; }
+  svg .cursor { stroke: var(--ink); stroke-width: 1; }
+  svg .hail-label { font: 600 12px var(--display); fill: var(--ink); }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <h1 id="title">hvac-brain recorder</h1>
+      <p class="span" id="span"></p>
+    </div>
+    <label class="open" tabindex="0" id="open-label">Open a log<input type="file" id="file" accept=".jsonl,.json,.txt"></label>
+  </header>
+
+  <section id="empty" class="empty" hidden>
+    <h2>No log loaded</h2>
+    <p>Drop a decision log on this page, or use “Open a log”. A log is the <code>.jsonl</code> file that a simulation or a live run writes to the <code>logs</code> folder.</p>
+    <p>To make one: <code>npm run simulate -- scenarios/hailstorm.json</code></p>
+    <p class="error" id="error" role="alert"></p>
+  </section>
+
+  <div id="loaded" hidden>
+    <p class="summary" id="summary"></p>
+    <div class="recorder">
+      <section class="chart" aria-label="Recorder">
+        <div class="legend" id="legend"></div>
+        <div id="plot" tabindex="0" role="application" aria-label="Timeline. Use the left and right arrow keys to move through decisions."></div>
+        <p class="hint">Point at the chart or use the arrow keys to see what the brain decided at that moment, and why. Times are UTC.</p>
+      </section>
+      <aside class="inspector" id="inspector" aria-live="polite"></aside>
+    </div>
+    <section class="changes">
+      <h2>Every change of command</h2>
+      <table>
+        <thead><tr><th>Time</th><th>HVAC</th><th>Blinds</th><th>Why</th></tr></thead>
+        <tbody id="changes"></tbody>
+      </table>
+    </section>
+  </div>
+</main>
+
+<script id="hvac-data" type="application/json">"__HVAC_DATA__"</script>
+<script>
+(() => {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const esc = (value) => String(value).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const MODES = { heat: 'Heat', cool: 'Cool', ventilate: 'Ventilate', dehumidify: 'Dehumidify' };
+  const PROTECTIVE = new Set(['hail-protection', 'storm-precaution']);
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  const isHail = (code) => code === 96 || code === 99;
+  function sky(code) {
+    if (code === 0) return 'clear';
+    if (code <= 3) return 'cloudy';
+    if (code === 45 || code === 48) return 'fog';
+    if (code >= 51 && code <= 57) return 'drizzle';
+    if (code >= 61 && code <= 67) return 'rain';
+    if (code >= 71 && code <= 77) return 'snow';
+    if (code >= 80 && code <= 82) return 'showers';
+    if (code === 85 || code === 86) return 'snow showers';
+    if (code === 95) return 'thunderstorm';
+    if (isHail(code)) return 'hail';
+    return 'code ' + code;
+  }
+  const two = (n) => String(n).padStart(2, '0');
+  const clock = (ms) => { const d = new Date(ms); return two(d.getUTCHours()) + ':' + two(d.getUTCMinutes()); };
+  const day = (ms) => { const d = new Date(ms); return d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()]; };
+  const hvacText = (c) => (c.mode === 'off' ? 'Off' : MODES[c.mode] + ' at ' + c.powerPct + ' %');
+  const hours = (h) => (h >= 10 ? h.toFixed(0) : h.toFixed(1)) + ' h';
+
+  let state = null;
+
+  function load(name, records) {
+    const rows = records
+      .filter((r) => r && r.time && r.weather && r.home && r.command)
+      .map((r) => ({ ...r, t: Date.parse(r.time) }))
+      .sort((a, b) => a.t - b.t);
+    if (rows.length < 2) throw new Error('That file does not contain a decision log with at least two entries.');
+    const gaps = rows.slice(1).map((r, i) => r.t - rows[i].t).sort((a, b) => a - b);
+    const step = gaps[Math.floor(gaps.length / 2)];
+    rows.forEach((r, i) => { r.until = rows[i + 1] ? Math.min(rows[i + 1].t, r.t + step * 3) : r.t + step; });
+    const changes = rows.filter((r, i) => i === 0 || changed(rows[i - 1], r));
+    const interesting = rows.findIndex((r) => r.command.blinds === 'closed' && PROTECTIVE.has(r.blinds.ruleId));
+    state = { name, rows, step, changes, cursor: interesting >= 0 ? interesting : rows.indexOf(changes[1] || rows[0]) };
+
+    $('empty').hidden = true;
+    $('loaded').hidden = false;
+    $('title').textContent = name;
+    $('span').textContent = day(rows[0].t) + ', ' + clock(rows[0].t) + ' to ' + day(rows.at(-1).until) + ', ' + clock(rows.at(-1).until) + ' UTC';
+    document.title = name + ' | hvac-brain recorder';
+    $('summary').textContent = summarize(rows);
+    drawLegend();
+    drawChart();
+    drawChanges();
+    select(state.cursor);
+  }
+
+  const changed = (a, b) =>
+    a.command.mode !== b.command.mode || a.command.blinds !== b.command.blinds ||
+    (a.setpoint && b.setpoint && a.setpoint.temperatureC !== b.setpoint.temperatureC);
+
+  function summarize(rows) {
+    const total = { heat: 0, cool: 0, ventilate: 0, dehumidify: 0 };
+    let closed = 0, guarded = 0, span = 0;
+    for (const r of rows) {
+      const h = (r.until - r.t) / 3600000;
+      span += h;
+      if (r.command.mode !== 'off') total[r.command.mode] += h;
+      if (r.command.blinds === 'closed') { closed += h; if (PROTECTIVE.has(r.blinds.ruleId)) guarded += h; }
+    }
+    const temps = rows.map((r) => r.home.temperatureC);
+    const used = Object.keys(total).filter((m) => total[m] > 0).map((m) => MODES[m].toLowerCase() + ' ' + hours(total[m]));
+    const parts = [
+      hours(span) + ' recorded.',
+      'Indoors stayed between ' + Math.min(...temps).toFixed(1) + ' and ' + Math.max(...temps).toFixed(1) + ' °C.',
+      used.length ? 'The HVAC ran: ' + used.join(', ') + '.' : 'The HVAC never ran.',
+      closed > 0
+        ? 'Blinds were closed for ' + hours(closed) + (guarded > 0 ? ', ' + hours(guarded) + ' of that to protect against hail.' : '.')
+        : 'Blinds stayed open.',
+    ];
+    return parts.join(' ');
+  }
+
+  function drawLegend() {
+    const line = (cls, label) => '<span style="color:' + cls + '"><i></i><span style="color:var(--muted)">' + label + '</span></span>';
+    const block = (color, label) => '<span><i class="block" style="background:' + color + '"></i>' + label + '</span>';
+    $('legend').innerHTML =
+      line('var(--ink)', 'Inside') + line('var(--muted)', 'Outside') +
+      '<span><i style="background:repeating-linear-gradient(90deg,var(--ink) 0 4px,transparent 4px 8px);opacity:.55"></i>Setpoint</span>' +
+      Object.keys(MODES).map((m) => block('var(--' + m + ')', MODES[m])).join('') + block('var(--rain)', 'Rain');
+  }
+
+  /* ---------- chart ---------- */
+  const LANES = { temp: 190, hum: 104, hvac: 42, blinds: 20 };
+  const PAD = { left: 40, right: 24, title: 30, gap: 10, axis: 26 };
+  let geometry = null;
+
+  function niceStep(range) { return range > 30 ? 10 : range > 14 ? 5 : range > 6 ? 2 : 1; }
+
+  function drawChart() {
+    const { rows } = state;
+    const width = Math.max(320, Math.floor($('plot').clientWidth));
+    const t0 = rows[0].t, t1 = rows.at(-1).until;
+    const x = (t) => PAD.left + ((t - t0) / (t1 - t0)) * (width - PAD.left - PAD.right);
+
+    let y = 0;
+    const top = {};
+    for (const lane of Object.keys(LANES)) { y += PAD.title; top[lane] = y; y += LANES[lane] + PAD.gap; }
+    const height = y - PAD.gap + PAD.axis;
+    const bottom = top.blinds + LANES.blinds;
+
+    // temperature scale
+    const temps = rows.flatMap((r) => [r.weather.temperatureC, r.home.temperatureC]);
+    const stepT = niceStep(Math.max(...temps) - Math.min(...temps));
+    const minT = Math.floor((Math.min(...temps) - 0.5) / stepT) * stepT;
+    const maxT = Math.ceil((Math.max(...temps) + 0.5) / stepT) * stepT;
+    const yT = (v) => top.temp + LANES.temp - ((v - minT) / (maxT - minT)) * LANES.temp;
+    const yH = (v) => top.hum + LANES.hum - (v / 100) * LANES.hum;
+
+    const out = [];
+    const path = (cls, pts) => '<path class="' + cls + '" d="M' + pts.map((p) => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('L') + '"/>';
+    const stepped = (get, scale) => rows.flatMap((r) => [[x(r.t), scale(get(r))], [x(r.until), scale(get(r))]]);
+    const smooth = (get, scale) => rows.map((r) => [x(r.t), scale(get(r))]);
+
+    out.push('<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
+      '<rect width="6" height="6" fill="var(--ink)" opacity="0.10"/><line x1="0" y1="0" x2="0" y2="6" stroke="var(--ink)" stroke-width="2" opacity="0.35"/></pattern></defs>');
+
+    // lane titles
+    const title = (lane, text) => '<text class="lane-title" x="0" y="' + (top[lane] - 13) + '">' + text + '</text>';
+    out.push(title('temp', 'Temperature, °C'), title('hum', 'Humidity, % and rain'), title('hvac', 'HVAC, bar height is power'), title('blinds', 'Blinds closed'));
+
+    // grids
+    for (let v = minT; v <= maxT; v += stepT) {
+      out.push('<line class="grid" x1="' + PAD.left + '" x2="' + (width - PAD.right) + '" y1="' + yT(v) + '" y2="' + yT(v) + '"/>');
+      out.push('<text x="' + (PAD.left - 6) + '" y="' + (yT(v) + 4) + '" text-anchor="end">' + v + '</text>');
+    }
+    for (const v of [0, 50, 100]) {
+      out.push('<line class="grid" x1="' + PAD.left + '" x2="' + (width - PAD.right) + '" y1="' + yH(v) + '" y2="' + yH(v) + '"/>');
+      out.push('<text x="' + (PAD.left - 6) + '" y="' + (yH(v) + 4) + '" text-anchor="end">' + v + '</text>');
+    }
+    for (const lane of ['hvac', 'blinds']) {
+      out.push('<line class="grid" x1="' + PAD.left + '" x2="' + (width - PAD.right) + '" y1="' + (top[lane] + LANES[lane]) + '" y2="' + (top[lane] + LANES[lane]) + '"/>');
+    }
+
+    // hail: hatched band across the weather lanes
+    runs(rows, (r) => isHail(r.weather.weatherCode)).forEach(([a, b]) => {
+      out.push('<rect x="' + x(a.t) + '" y="' + top.temp + '" width="' + (x(b.until) - x(a.t)) + '" height="' + (top.hum + LANES.hum - top.temp) + '" fill="url(#hatch)"/>');
+      out.push('<text class="hail-label" x="' + (x(a.t) + 4) + '" y="' + (top.temp + 14) + '">Hail</text>');
+    });
+
+    // rain bars, one per hour of weather
+    const seen = new Map();
+    for (const r of rows) if (!seen.has(r.weather.time)) seen.set(r.weather.time, r.weather);
+    const wettest = Math.max(1, ...[...seen.values()].map((w) => w.precipitationMm));
+    for (const w of seen.values()) {
+      if (w.precipitationMm <= 0) continue;
+      const start = Math.max(Date.parse(w.time), t0), end = Math.min(Date.parse(w.time) + 3600000, t1);
+      const h = (w.precipitationMm / wettest) * LANES.hum * 0.6;
+      out.push('<rect x="' + (x(start) + 1) + '" y="' + (top.hum + LANES.hum - h) + '" width="' + Math.max(1, x(end) - x(start) - 2) + '" height="' + h + '" fill="var(--rain)" opacity="0.75"/>');
+    }
+
+    // lines
+    out.push(path('outside', stepped((r) => r.weather.temperatureC, yT)));
+    if (rows[0].setpoint) out.push(path('setpoint', stepped((r) => r.setpoint.temperatureC, yT)));
+    out.push(path('inside', smooth((r) => r.home.temperatureC, yT)));
+    out.push(path('outside', stepped((r) => r.weather.humidityPct, yH)));
+    out.push(path('inside', smooth((r) => r.home.humidityPct, yH)));
+
+    // HVAC blocks
+    runs(rows, (r) => r.command.mode !== 'off', (a, b) => a.command.mode === b.command.mode && a.command.powerPct === b.command.powerPct).forEach(([a, b]) => {
+      const h = Math.max(4, (a.command.powerPct / 100) * LANES.hvac);
+      out.push('<rect x="' + x(a.t) + '" y="' + (top.hvac + LANES.hvac - h) + '" width="' + Math.max(1, x(b.until) - x(a.t)) + '" height="' + h + '" fill="var(--' + a.command.mode + ')"/>');
+    });
+
+    // blinds blocks: solid for sun, hatched outline for protection
+    runs(rows, (r) => r.command.blinds === 'closed', (a, b) => PROTECTIVE.has(a.blinds.ruleId) === PROTECTIVE.has(b.blinds.ruleId)).forEach(([a, b]) => {
+      const guard = PROTECTIVE.has(a.blinds.ruleId);
+      out.push('<rect x="' + x(a.t) + '" y="' + top.blinds + '" width="' + Math.max(1, x(b.until) - x(a.t)) + '" height="' + LANES.blinds + '" fill="' + (guard ? 'url(#hatch)' : 'var(--muted)') + '"' +
+        (guard ? ' stroke="var(--ink)" stroke-width="1.5"' : ' opacity="0.55"') + '/>');
+      if (guard && x(b.until) - x(a.t) > 90) out.push('<text class="hail-label" x="' + (x(a.t) + 6) + '" y="' + (top.blinds + 14) + '">for protection</text>');
+    });
+
+    // time axis
+    const spanH = (t1 - t0) / 3600000;
+    const every = [1, 2, 3, 6, 12, 24, 48, 168].find((n) => spanH / n <= Math.max(4, width / 90)) || 168;
+    for (let t = Math.ceil(t0 / (every * 3600000)) * every * 3600000; t <= t1; t += every * 3600000) {
+      const midnight = new Date(t).getUTCHours() === 0;
+      out.push('<line class="grid" x1="' + x(t) + '" x2="' + x(t) + '" y1="' + bottom + '" y2="' + (bottom + 5) + '"/>');
+      out.push('<text x="' + x(t) + '" y="' + (bottom + 19) + '" text-anchor="middle"' + (midnight ? ' style="fill:var(--ink);font-weight:600"' : '') + '>' + (midnight ? day(t) : clock(t)) + '</text>');
+    }
+
+    // cursor
+    out.push('<line id="cursor" class="cursor" y1="' + top.temp + '" y2="' + bottom + '"/>');
+    out.push('<circle id="dot-t" r="4" fill="var(--ink)"/><circle id="dot-h" r="4" fill="var(--ink)"/>');
+
+    $('plot').innerHTML = '<svg viewBox="0 0 ' + width + ' ' + height + '" height="' + height + '" role="img" aria-label="Temperature, humidity, HVAC mode and blinds over time">' + out.join('') + '</svg>';
+    geometry = { x, yT, yH, t0, t1, width };
+    moveCursor();
+  }
+
+  /** Groups consecutive rows that pass `test` (and, if given, belong together) into [first, last] pairs. */
+  function runs(rows, test, same) {
+    const result = [];
+    let first = null, last = null;
+    for (const r of rows) {
+      const joins = first && test(r) && r.t <= last.until && (!same || same(last, r));
+      if (joins) { last = r; continue; }
+      if (first) result.push([first, last]);
+      first = last = test(r) ? r : null;
+    }
+    if (first) result.push([first, last]);
+    return result;
+  }
+
+  function moveCursor() {
+    if (!geometry) return;
+    const r = state.rows[state.cursor];
+    const cx = geometry.x(r.t);
+    const line = $('cursor');
+    line.setAttribute('x1', cx); line.setAttribute('x2', cx);
+    $('dot-t').setAttribute('cx', cx); $('dot-t').setAttribute('cy', geometry.yT(r.home.temperatureC));
+    $('dot-h').setAttribute('cx', cx); $('dot-h').setAttribute('cy', geometry.yH(r.home.humidityPct));
+  }
+
+  function nearest(clientX) {
+    const box = $('plot').firstElementChild.getBoundingClientRect();
+    const px = ((clientX - box.left) / box.width) * geometry.width;
+    const { rows } = state;
+    const t = geometry.t0 + ((px - PAD.left) / (geometry.width - PAD.left - PAD.right)) * (geometry.t1 - geometry.t0);
+    let lo = 0, hi = rows.length - 1;
+    while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (rows[mid].t <= t) lo = mid; else hi = mid - 1; }
+    return lo;
+  }
+
+  /* ---------- inspector ---------- */
+  function select(index) {
+    state.cursor = Math.min(state.rows.length - 1, Math.max(0, index));
+    moveCursor();
+    const r = state.rows[state.cursor];
+    const w = r.weather;
+    const outlook = r.outlook && r.outlook.hailInMin !== null && r.outlook.hailInMin !== undefined
+      ? (r.outlook.hailInMin === 0 ? ' Hail now.' : ' Hail forecast in ' + r.outlook.hailInMin + ' min.') : '';
+    const setpoint = r.setpoint ? r.setpoint.temperatureC.toFixed(1) + ' °C' + (r.setpoint.reason ? ' (' + esc(r.setpoint.reason) + ')' : '') : 'not recorded';
+    const proposals = (r.proposals || []).slice().sort((a, b) => b.priority - a.priority).map((p) => {
+      const wants = [p.hvac ? MODES[p.hvac.mode] + ' ' + p.hvac.powerPct + ' %' : '', p.blinds ? 'blinds ' + p.blinds : ''].filter(Boolean).join(', ');
+      const hvacWon = p.hvac && r.hvac.ruleId === p.ruleId, blindsWon = p.blinds && r.blinds.ruleId === p.ruleId;
+      const verdict = hvacWon || blindsWon ? '<span class="tag">in control</span>' : '<span class="tag">outranked</span>';
+      return '<li class="' + (hvacWon || blindsWon ? '' : 'lost') + '"><span class="priority">' + p.priority + '</span>' +
+        '<span><span class="rule">' + esc(p.ruleId) + '</span>' + verdict + '<br><span class="wants">' + esc(wants) + '</span></span>' +
+        '<span class="reason">' + esc(p.reason) + '</span></li>';
+    }).join('');
+    $('inspector').innerHTML =
+      '<p class="moment">' + day(r.t) + ', ' + clock(r.t) + '</p>' +
+      '<dl>' +
+      '<dt>Outside</dt><dd>' + w.temperatureC.toFixed(1) + ' °C, ' + Math.round(w.humidityPct) + ' % humidity, ' + sky(w.weatherCode) + '.' + outlook + '</dd>' +
+      '<dt>Inside</dt><dd>' + r.home.temperatureC.toFixed(1) + ' °C, ' + Math.round(r.home.humidityPct) + ' % humidity</dd>' +
+      '<dt>Setpoint</dt><dd>' + setpoint + '</dd>' +
+      '<dt>Command</dt><dd class="command">' + hvacText(r.command) + ', blinds ' + r.command.blinds + '</dd>' +
+      '</dl>' +
+      '<h2>' + (proposals ? 'What the rules proposed' : 'No rule proposed anything') + '</h2>' +
+      (proposals ? '<ul class="proposals">' + proposals + '</ul>' : '<p style="color:var(--muted);margin:0">So the HVAC is off and the blinds are open.</p>') +
+      (r.notes || []).map((n) => '<p class="note">' + esc(n) + '</p>').join('');
+    for (const row of $('changes').children) row.classList.remove('current');
+    const current = [...state.changes].reverse().find((c) => c.t <= r.t);
+    const tr = current && $('changes').children[state.changes.indexOf(current)];
+    if (tr) tr.classList.add('current');
+  }
+
+  /* ---------- changes table ---------- */
+  function drawChanges() {
+    let lastDay = '';
+    $('changes').innerHTML = state.changes.map((r, i) => {
+      const d = day(r.t);
+      const label = (d !== lastDay ? d + ', ' : '') + clock(r.t);
+      lastDay = d;
+      const why = [r.hvac.ruleId !== 'idle' ? r.hvac.reason : '',
+        r.hvac.ruleId === 'idle' && r.setpoint && r.setpoint.reason ? 'Setpoint ' + r.setpoint.temperatureC.toFixed(1) + ' °C (' + r.setpoint.reason + ')' : '',
+        r.blinds.ruleId !== 'idle' ? r.blinds.reason : ''].filter(Boolean).join('. ');
+      const swatch = r.command.mode === 'off' ? '' : '<span class="swatch" style="background:var(--' + r.command.mode + ')"></span>';
+      return '<tr><td><button type="button" data-i="' + state.rows.indexOf(r) + '">' + label + '</button></td><td>' + swatch + hvacText(r.command) +
+        '</td><td>' + (r.command.blinds === 'closed' ? 'Closed' : 'Open') + '</td><td>' + esc(why || (i === 0 ? 'Start of the log' : 'Nothing needed')) + '</td></tr>';
+    }).join('');
+  }
+
+  /* ---------- events ---------- */
+  $('plot').addEventListener('pointermove', (e) => { if (state) select(nearest(e.clientX)); });
+  $('plot').addEventListener('pointerdown', (e) => { if (state) select(nearest(e.clientX)); });
+  $('plot').addEventListener('keydown', (e) => {
+    if (!state) return;
+    const jump = e.shiftKey ? 6 : 1;
+    const to = { ArrowLeft: state.cursor - jump, ArrowRight: state.cursor + jump, Home: 0, End: state.rows.length - 1 }[e.key];
+    if (to === undefined) return;
+    e.preventDefault();
+    select(to);
+  });
+  $('changes').addEventListener('click', (e) => {
+    const button = e.target.closest('button[data-i]');
+    if (button) { select(Number(button.dataset.i)); $('plot').scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+  });
+  let resizing = 0;
+  new ResizeObserver(() => { cancelAnimationFrame(resizing); resizing = requestAnimationFrame(() => { if (state) drawChart(); }); }).observe($('plot'));
+
+  function fail(message) {
+    if (!state) $('empty').hidden = false;
+    $('error').textContent = message;
+    if (state) alert(message);
+  }
+  function readFile(file) {
+    if (!file) return;
+    file.text().then((text) => {
+      const records = text.split('\n').filter((line) => line.trim()).map((line) => JSON.parse(line));
+      $('error').textContent = '';
+      load(file.name.replace(/\.[^.]+$/, ''), records);
+    }).catch((error) => fail(error instanceof SyntaxError ? 'That file is not a decision log: each line must be one JSON object.' : error.message));
+  }
+  $('file').addEventListener('change', (e) => readFile(e.target.files[0]));
+  $('open-label').addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('file').click(); } });
+  window.addEventListener('dragover', (e) => { e.preventDefault(); $('empty').classList.add('over'); });
+  window.addEventListener('dragleave', () => $('empty').classList.remove('over'));
+  window.addEventListener('drop', (e) => { e.preventDefault(); $('empty').classList.remove('over'); readFile(e.dataTransfer.files[0]); });
+
+  const embedded = JSON.parse($('hvac-data').textContent);
+  if (embedded && typeof embedded === 'object' && Array.isArray(embedded.records)) {
+    try { load(embedded.name, embedded.records); } catch (error) { fail(error.message); }
+  } else {
+    $('empty').hidden = false;
+  }
+})();
+</script>
+</body>
+</html>

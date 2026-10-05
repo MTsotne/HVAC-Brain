@@ -1,0 +1,35 @@
+{
+  "name": "Cold snap",
+  "description": "A mild winter afternoon that drops to -17 °C overnight.",
+  "start": "2026-01-18T12:00:00Z",
+  "initialHome": {
+    "temperatureC": 21.8,
+    "humidityPct": 32
+  },
+  "hours": [
+    {"temperatureC": -2, "humidityPct": 80, "precipitationMm": 0, "windGustKmh": 15, "cloudCoverPct": 40, "solarRadiationWm2": 140, "weatherCode": 2},
+    {"temperatureC": -2, "humidityPct": 80, "precipitationMm": 0, "windGustKmh": 15, "cloudCoverPct": 30, "solarRadiationWm2": 110, "weatherCode": 1},
+    {"temperatureC": -3, "humidityPct": 80, "precipitationMm": 0, "windGustKmh": 15, "cloudCoverPct": 20, "solarRadiationWm2": 50, "weatherCode": 1},
+    {"temperatureC": -4, "humidityPct": 80, "precipitationMm": 0, "windGustKmh": 12, "cloudCoverPct": 10, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": -5, "humidityPct": 80, "precipitationMm": 0, "windGustKmh": 12, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": -6, "humidityPct": 82, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": -7, "humidityPct": 82, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": -8, "humidityPct": 82, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": -9, "humidityPct": 84, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": -10, "humidityPct": 84, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": -12, "humidityPct": 84, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": -13, "humidityPct": 85, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": -14, "humidityPct": 85, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": -15, "humidityPct": 85, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": -16, "humidityPct": 86, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": -16, "humidityPct": 86, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": -17, "humidityPct": 86, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": -17, "humidityPct": 86, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": -17, "humidityPct": 86, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": -16, "humidityPct": 86, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 10, "weatherCode": 0},
+    {"temperatureC": -15, "humidityPct": 85, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 60, "weatherCode": 0},
+    {"temperatureC": -13, "humidityPct": 84, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 0, "solarRadiationWm2": 120, "weatherCode": 0},
+    {"temperatureC": -11, "humidityPct": 82, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 0, "solarRadiationWm2": 160, "weatherCode": 0},
+    {"temperatureC": -9, "humidityPct": 80, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 10, "solarRadiationWm2": 150, "weatherCode": 1}
+  ]
+}

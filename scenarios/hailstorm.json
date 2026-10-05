@@ -1,0 +1,35 @@
+{
+  "name": "Summer hailstorm",
+  "description": "A warm, sunny morning, then a thunderstorm with hail from 15:00 to 17:00.",
+  "start": "2026-07-14T06:00:00Z",
+  "initialHome": {
+    "temperatureC": 21.5,
+    "humidityPct": 48
+  },
+  "hours": [
+    {"temperatureC": 18, "humidityPct": 62, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 10, "solarRadiationWm2": 180, "weatherCode": 1},
+    {"temperatureC": 20, "humidityPct": 58, "precipitationMm": 0, "windGustKmh": 12, "cloudCoverPct": 10, "solarRadiationWm2": 330, "weatherCode": 1},
+    {"temperatureC": 22, "humidityPct": 54, "precipitationMm": 0, "windGustKmh": 12, "cloudCoverPct": 15, "solarRadiationWm2": 480, "weatherCode": 1},
+    {"temperatureC": 24, "humidityPct": 50, "precipitationMm": 0, "windGustKmh": 14, "cloudCoverPct": 15, "solarRadiationWm2": 610, "weatherCode": 1},
+    {"temperatureC": 26, "humidityPct": 46, "precipitationMm": 0, "windGustKmh": 15, "cloudCoverPct": 20, "solarRadiationWm2": 700, "weatherCode": 1},
+    {"temperatureC": 27, "humidityPct": 45, "precipitationMm": 0, "windGustKmh": 18, "cloudCoverPct": 35, "solarRadiationWm2": 690, "weatherCode": 2},
+    {"temperatureC": 28, "humidityPct": 46, "precipitationMm": 0, "windGustKmh": 22, "cloudCoverPct": 55, "solarRadiationWm2": 560, "weatherCode": 2},
+    {"temperatureC": 28, "humidityPct": 50, "precipitationMm": 0, "windGustKmh": 30, "cloudCoverPct": 80, "solarRadiationWm2": 330, "weatherCode": 3},
+    {"temperatureC": 26, "humidityPct": 62, "precipitationMm": 4, "windGustKmh": 60, "cloudCoverPct": 100, "solarRadiationWm2": 90, "weatherCode": 95},
+    {"temperatureC": 21, "humidityPct": 85, "precipitationMm": 12, "windGustKmh": 85, "cloudCoverPct": 100, "solarRadiationWm2": 40, "weatherCode": 99},
+    {"temperatureC": 19, "humidityPct": 90, "precipitationMm": 8, "windGustKmh": 70, "cloudCoverPct": 100, "solarRadiationWm2": 50, "weatherCode": 96},
+    {"temperatureC": 19, "humidityPct": 88, "precipitationMm": 3, "windGustKmh": 45, "cloudCoverPct": 95, "solarRadiationWm2": 90, "weatherCode": 81},
+    {"temperatureC": 19, "humidityPct": 82, "precipitationMm": 0, "windGustKmh": 30, "cloudCoverPct": 70, "solarRadiationWm2": 120, "weatherCode": 3},
+    {"temperatureC": 18, "humidityPct": 80, "precipitationMm": 0, "windGustKmh": 20, "cloudCoverPct": 40, "solarRadiationWm2": 60, "weatherCode": 2},
+    {"temperatureC": 17, "humidityPct": 80, "precipitationMm": 0, "windGustKmh": 15, "cloudCoverPct": 20, "solarRadiationWm2": 10, "weatherCode": 1},
+    {"temperatureC": 16, "humidityPct": 82, "precipitationMm": 0, "windGustKmh": 12, "cloudCoverPct": 10, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": 15, "humidityPct": 84, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 10, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": 15, "humidityPct": 85, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 10, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": 14, "humidityPct": 86, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 10, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": 14, "humidityPct": 87, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 10, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": 13, "humidityPct": 88, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 10, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": 13, "humidityPct": 88, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 15, "solarRadiationWm2": 20, "weatherCode": 1},
+    {"temperatureC": 14, "humidityPct": 85, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 15, "solarRadiationWm2": 110, "weatherCode": 1},
+    {"temperatureC": 16, "humidityPct": 78, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 15, "solarRadiationWm2": 250, "weatherCode": 1}
+  ]
+}

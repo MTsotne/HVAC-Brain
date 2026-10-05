@@ -1,0 +1,35 @@
+{
+  "name": "Rainy summer day",
+  "description": "A grey morning, then steady warm rain from 09:00 to 18:00 that pushes humidity up.",
+  "start": "2026-08-10T04:00:00Z",
+  "initialHome": {
+    "temperatureC": 22,
+    "humidityPct": 48
+  },
+  "hours": [
+    {"temperatureC": 16, "humidityPct": 68, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 70, "solarRadiationWm2": 20, "weatherCode": 2},
+    {"temperatureC": 16, "humidityPct": 68, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 75, "solarRadiationWm2": 70, "weatherCode": 2},
+    {"temperatureC": 17, "humidityPct": 66, "precipitationMm": 0, "windGustKmh": 12, "cloudCoverPct": 80, "solarRadiationWm2": 130, "weatherCode": 3},
+    {"temperatureC": 18, "humidityPct": 66, "precipitationMm": 0, "windGustKmh": 12, "cloudCoverPct": 85, "solarRadiationWm2": 180, "weatherCode": 3},
+    {"temperatureC": 19, "humidityPct": 70, "precipitationMm": 0, "windGustKmh": 15, "cloudCoverPct": 95, "solarRadiationWm2": 170, "weatherCode": 3},
+    {"temperatureC": 19, "humidityPct": 90, "precipitationMm": 2, "windGustKmh": 20, "cloudCoverPct": 100, "solarRadiationWm2": 90, "weatherCode": 61},
+    {"temperatureC": 19, "humidityPct": 94, "precipitationMm": 4, "windGustKmh": 22, "cloudCoverPct": 100, "solarRadiationWm2": 70, "weatherCode": 63},
+    {"temperatureC": 19, "humidityPct": 96, "precipitationMm": 6, "windGustKmh": 25, "cloudCoverPct": 100, "solarRadiationWm2": 60, "weatherCode": 65},
+    {"temperatureC": 20, "humidityPct": 96, "precipitationMm": 5, "windGustKmh": 25, "cloudCoverPct": 100, "solarRadiationWm2": 70, "weatherCode": 63},
+    {"temperatureC": 20, "humidityPct": 95, "precipitationMm": 4, "windGustKmh": 22, "cloudCoverPct": 100, "solarRadiationWm2": 80, "weatherCode": 63},
+    {"temperatureC": 20, "humidityPct": 95, "precipitationMm": 3, "windGustKmh": 20, "cloudCoverPct": 100, "solarRadiationWm2": 80, "weatherCode": 63},
+    {"temperatureC": 20, "humidityPct": 94, "precipitationMm": 3, "windGustKmh": 20, "cloudCoverPct": 100, "solarRadiationWm2": 70, "weatherCode": 61},
+    {"temperatureC": 19, "humidityPct": 94, "precipitationMm": 2, "windGustKmh": 18, "cloudCoverPct": 100, "solarRadiationWm2": 50, "weatherCode": 61},
+    {"temperatureC": 19, "humidityPct": 93, "precipitationMm": 1, "windGustKmh": 15, "cloudCoverPct": 100, "solarRadiationWm2": 30, "weatherCode": 61},
+    {"temperatureC": 18, "humidityPct": 90, "precipitationMm": 0, "windGustKmh": 12, "cloudCoverPct": 90, "solarRadiationWm2": 10, "weatherCode": 3},
+    {"temperatureC": 18, "humidityPct": 86, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 70, "solarRadiationWm2": 0, "weatherCode": 2},
+    {"temperatureC": 17, "humidityPct": 84, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 50, "solarRadiationWm2": 0, "weatherCode": 2},
+    {"temperatureC": 17, "humidityPct": 82, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 40, "solarRadiationWm2": 0, "weatherCode": 1},
+    {"temperatureC": 16, "humidityPct": 82, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 30, "solarRadiationWm2": 0, "weatherCode": 1},
+    {"temperatureC": 16, "humidityPct": 82, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 30, "solarRadiationWm2": 0, "weatherCode": 1},
+    {"temperatureC": 15, "humidityPct": 83, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 30, "solarRadiationWm2": 0, "weatherCode": 1},
+    {"temperatureC": 15, "humidityPct": 84, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 30, "solarRadiationWm2": 0, "weatherCode": 1},
+    {"temperatureC": 15, "humidityPct": 84, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 30, "solarRadiationWm2": 0, "weatherCode": 1},
+    {"temperatureC": 15, "humidityPct": 84, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 30, "solarRadiationWm2": 10, "weatherCode": 1}
+  ]
+}

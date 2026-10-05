@@ -1,0 +1,24 @@
+{
+  "name": "hvac-brain",
+  "version": "0.1.0",
+  "description": "Forecast-aware decision engine for a smart home HVAC and blinds, with a weather replay simulator.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "simulate": "tsx src/cli.ts simulate",
+    "live": "tsx src/cli.ts live",
+    "analyze": "tsx src/cli.ts analyze",
+    "dashboard": "tsx src/cli.ts dashboard",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}

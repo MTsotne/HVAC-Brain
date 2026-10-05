@@ -1,0 +1,35 @@
+{
+  "name": "Heat wave",
+  "description": "A mild night followed by a cloudless day that peaks at 35 °C in the afternoon.",
+  "start": "2026-07-21T02:00:00Z",
+  "initialHome": {
+    "temperatureC": 22.5,
+    "humidityPct": 45
+  },
+  "hours": [
+    {"temperatureC": 19, "humidityPct": 55, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": 18, "humidityPct": 57, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": 18, "humidityPct": 58, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 40, "weatherCode": 0},
+    {"temperatureC": 19, "humidityPct": 55, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 160, "weatherCode": 0},
+    {"temperatureC": 21, "humidityPct": 50, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 0, "solarRadiationWm2": 320, "weatherCode": 0},
+    {"temperatureC": 24, "humidityPct": 44, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 0, "solarRadiationWm2": 480, "weatherCode": 0},
+    {"temperatureC": 27, "humidityPct": 38, "precipitationMm": 0, "windGustKmh": 12, "cloudCoverPct": 0, "solarRadiationWm2": 630, "weatherCode": 0},
+    {"temperatureC": 29, "humidityPct": 34, "precipitationMm": 0, "windGustKmh": 12, "cloudCoverPct": 0, "solarRadiationWm2": 760, "weatherCode": 0},
+    {"temperatureC": 31, "humidityPct": 30, "precipitationMm": 0, "windGustKmh": 14, "cloudCoverPct": 0, "solarRadiationWm2": 850, "weatherCode": 0},
+    {"temperatureC": 33, "humidityPct": 27, "precipitationMm": 0, "windGustKmh": 14, "cloudCoverPct": 0, "solarRadiationWm2": 890, "weatherCode": 0},
+    {"temperatureC": 34, "humidityPct": 25, "precipitationMm": 0, "windGustKmh": 15, "cloudCoverPct": 0, "solarRadiationWm2": 870, "weatherCode": 0},
+    {"temperatureC": 35, "humidityPct": 24, "precipitationMm": 0, "windGustKmh": 15, "cloudCoverPct": 0, "solarRadiationWm2": 800, "weatherCode": 0},
+    {"temperatureC": 35, "humidityPct": 24, "precipitationMm": 0, "windGustKmh": 15, "cloudCoverPct": 0, "solarRadiationWm2": 680, "weatherCode": 0},
+    {"temperatureC": 34, "humidityPct": 25, "precipitationMm": 0, "windGustKmh": 14, "cloudCoverPct": 0, "solarRadiationWm2": 530, "weatherCode": 0},
+    {"temperatureC": 33, "humidityPct": 27, "precipitationMm": 0, "windGustKmh": 12, "cloudCoverPct": 0, "solarRadiationWm2": 360, "weatherCode": 0},
+    {"temperatureC": 31, "humidityPct": 30, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 0, "solarRadiationWm2": 190, "weatherCode": 0},
+    {"temperatureC": 29, "humidityPct": 34, "precipitationMm": 0, "windGustKmh": 10, "cloudCoverPct": 0, "solarRadiationWm2": 60, "weatherCode": 0},
+    {"temperatureC": 27, "humidityPct": 38, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": 25, "humidityPct": 42, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": 24, "humidityPct": 45, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": 23, "humidityPct": 47, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": 22, "humidityPct": 50, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": 21, "humidityPct": 52, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0},
+    {"temperatureC": 21, "humidityPct": 53, "precipitationMm": 0, "windGustKmh": 8, "cloudCoverPct": 0, "solarRadiationWm2": 0, "weatherCode": 0}
+  ]
+}
